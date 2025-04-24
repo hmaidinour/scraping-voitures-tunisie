@@ -24,11 +24,11 @@ app.title = "Tableau de Bord - Annonces de Voitures"
 # Graphique 1 : Répartition par énergie
 fig_energie = px.pie(df, names='Energie', title='Répartition par Énergie')
 
-# Graphique 2 : Répartition par ville
-location_counts = df['Location'].value_counts().reset_index()
-location_counts.columns = ['Ville', 'Nombre d\'annonces']
-fig_location = px.bar(location_counts, x='Ville', y='Nombre d\'annonces',
-                      title='Annonces par Ville')
+# Graphique Répartition par Nom (Top 10)
+top_names = df['Name'].value_counts().nlargest(10).reset_index()
+top_names.columns = ['Nom', 'Nombre d\'annonces']
+fig_name = px.bar(top_names, x='Nom', y='Nombre d\'annonces', title='Top 10 des Voitures les plus Annoncées')
+
 
 # Graphique 3 : Répartition par année
 fig_year = px.histogram(df, x='Year', title='Répartition des Annonces par Année')
@@ -40,7 +40,7 @@ fig_hp = px.histogram(df, x='Horse Power', nbins=20, title='Répartition de la P
 app.layout = html.Div(children=[
     html.H1("Tableau de Bord - Annonces de Voitures", style={'textAlign': 'center'}),
     dcc.Graph(figure=fig_energie),
-    dcc.Graph(figure=fig_location),
+    dcc.Graph(figure=fig_name),
     dcc.Graph(figure=fig_year),
     dcc.Graph(figure=fig_hp),
 ])
